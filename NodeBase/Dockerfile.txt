@@ -1,4 +1,3 @@
-FROM selenium/base:2.46.0
 MAINTAINER Selenium <selenium-developers@googlegroups.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,14 +12,12 @@ RUN echo "US/Pacific" | sudo tee /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
 #==============
-# PhantomJS
+# VNC and Xvfb
 #==============
-RUN apt-get update -y
-RUN apt-get install bzip2 libfreetype6 libfontconfig1  -y
-RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
-RUN tar -xvjf phantomjs-1.9.8-linux-x86_64.tar.bz2 && rm phantomjs-1.9.8-linux-x86_64.tar.bz2
-RUN mv /phantomjs-1.9.8-linux-x86_64 /usr/local/phantomjs-1.9.8-linux-x86_64
-RUN ln -s /usr/local/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+RUN apt-get update -qqy \
+  && apt-get -qqy install \
+    xvfb \
+  && rm -rf /var/lib/apt/lists/*
 
 #==============================
 # Scripts to run Selenium Node
